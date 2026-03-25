@@ -1,7 +1,5 @@
 mod utils;
-mod handlers {
-    pub mod user;
-}
+mod handlers;
 
 use crate::utils::{show_main_menu, get_input};
 use crate::handlers::user::{show_user_menu};
