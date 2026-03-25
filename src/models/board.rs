@@ -1,5 +1,5 @@
 struct Board {
-    id: i32,
+    id: u32,
     name: String,
-    organization_id: i32 // org ref
+    organization_id: u32 // org ref
 }

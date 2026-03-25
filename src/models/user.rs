@@ -1,5 +1,5 @@
 struct User {
-    id: i32,
+    id: u32,
     name: String,
     email: String
 }

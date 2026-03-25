@@ -1,4 +1,4 @@
 struct Organization {
-    id: i32,
+    id: u32,
     name: String,
 }

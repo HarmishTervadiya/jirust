@@ -5,10 +5,10 @@ enum IssueStatus {
 }
 
 struct Issue {
-    id: i32,
+    id: u32,
     title: String,
     description: String,
     status: IssueStatus,
-    board_id: i32, // board ref
-    assignee_id: i32 // user ref
+    board_id: u32, // board ref
+    assignee_id: u32 // user ref
 }
