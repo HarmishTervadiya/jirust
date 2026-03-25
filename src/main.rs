@@ -1,6 +1,10 @@
 mod utils;
+mod handlers {
+    pub mod user;
+}
 
 use crate::utils::{show_main_menu, get_input};
+use crate::handlers::user::{show_user_menu};
 
 fn main() {
     loop {
@@ -15,7 +19,7 @@ fn main() {
         // }
         match get_input().as_str() {
             "1" => println!("org option"),
-            "2" => println!("user option"),
+            "2" => show_user_menu(),
             "3" => println!("board option"),
             "4" => println!("issue option"),
             "q" => break,
