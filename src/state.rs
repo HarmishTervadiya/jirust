@@ -5,5 +5,4 @@ pub struct AppState {
     pub boards: HashMap<u32, Board>, // board
     pub issues: HashMap<u32, Issue>, // issue 
     pub next_id: u32,   // auto-increment, like MongoDB ObjectId counter
-
 }
