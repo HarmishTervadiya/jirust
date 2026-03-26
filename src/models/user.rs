@@ -1,5 +1,5 @@
-struct User {
-    id: u32,
-    name: String,
-    email: String
+pub struct User {
+    pub id: u32,
+    pub name: String,
+    pub email: String,
 }

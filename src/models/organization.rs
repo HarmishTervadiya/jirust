@@ -1,4 +1,4 @@
-struct Organization {
-    id: u32,
-    name: String,
+pub struct Organization {
+    pub id: u32,
+    pub name: String,
 }

@@ -1,3 +1,7 @@
+use std::collections::HashMap;
+
+use crate::models::{board::Board, issue::Issue, organization::Organization, user::User};
+
 // TODO: have to think i32 or u32 for keys (ids)
 pub struct AppState {
     pub organizations: HashMap<u32, Organization>, // org
