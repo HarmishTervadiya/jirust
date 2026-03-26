@@ -43,6 +43,29 @@ fn create_user(state: &mut AppState) {
     println!("User created successfully with id: {}", new_id);
 }
 
+fn get_users(state: &mut AppState) {
+    println!("\nGet User");
+
+    println!("\nAll Users");
+    if state.users.is_empty() {
+        println!("No users found.");
+        return;
+    }
+
+    println!("+----+----------------+----------------------+");
+    println!("| ID | Name           | Email                |");
+    println!("+----+----------------+----------------------+");
+
+    for user in state.users.values() {
+        println!("ID: {}", user.id);
+        println!("Name: {}", user.name);
+        println!("Email: {}", user.email);
+        println!("---------------------------");
+    }
+
+    println!("+----+----------------+----------------------+");
+}
+
 pub fn show_user_menu(state: &mut AppState) {
     loop {
         println!("\n+-----------------------------+");
@@ -59,6 +82,7 @@ pub fn show_user_menu(state: &mut AppState) {
         let input = get_input();
         match input.as_str() {
             "1" => create_user(state),
+            "4" => get_users(state),
             "5" => break,
             _ => println!("Invalid option. Please enter a number from 1 to 5."),
         }
