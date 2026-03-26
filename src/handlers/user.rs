@@ -66,24 +66,56 @@ fn get_users(state: &mut AppState) {
     println!("+----+----------------+----------------------+");
 }
 
+fn get_user_by_id(state: &mut AppState) {
+    println!("\nGet User By Id");
+    print!("Enter id: ");
+    let id:u32 = get_input().parse().unwrap();
+    
+    println!("\nUser with id: {}", id);
+    if state.users.is_empty() {
+        println!("No users found.");
+        return;
+    }
+
+    println!("+----+----------------+----------------------+");
+    println!("| ID | Name           | Email                |");
+    println!("+----+----------------+----------------------+");
+
+    let user = state.users.get(&id);
+    match user {
+        Some(user) => {
+            println!("ID: {}", user.id);
+            println!("Name: {}", user.name);
+            println!("Email: {}", user.email);
+            println!("---------------------------");
+        }
+        None => {
+            println!("No user found.");
+        }
+    }
+    println!("+----+----------------+----------------------+");
+}
+
 pub fn show_user_menu(state: &mut AppState) {
     loop {
-        println!("\n+-----------------------------+");
-        println!("|          USER MENU         |");
-        println!("+-----------------------------+");
-        println!("| [1] Create a new user      |");
-        println!("| [2] Update user details    |");
-        println!("| [3] Delete user            |");
-        println!("| [4] Get user details       |");
-        println!("| [5] Back                   |");
-        println!("+-----------------------------+");
+        println!("\n+------------------------------+");
+        println!("|           USER MENU            |");
+        println!("+--------------------------------+");
+        println!("| [1] Create a new user          |");
+        println!("| [2] Update user details        |");
+        println!("| [3] Delete user                |");
+        println!("| [4] Get all user details       |");
+        println!("| [5] Get user by id             |");
+        println!("| [6] Back                       |");
+        println!("+--------------------------------+");
         print!("Enter choice (1-5): ");
 
         let input = get_input();
         match input.as_str() {
             "1" => create_user(state),
             "4" => get_users(state),
-            "5" => break,
+            "5" => get_user_by_id(state),
+            "6" => break,
             _ => println!("Invalid option. Please enter a number from 1 to 5."),
         }
     }
