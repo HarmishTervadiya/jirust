@@ -23,3 +23,16 @@ pub fn show_main_menu() {
     println!("╚══════════════════════════════╝");
     print!("\n  Enter choice: ");
 }
+
+pub fn read_id() -> Option<u32> {
+    print!("Enter id: ");
+    let raw_id = get_input();
+
+    match raw_id.parse::<u32>() {
+        Ok(id) => Some(id),
+        Err(_) => {
+            println!("Invalid id. Please enter a valid number.");
+            None
+        }
+    }
+}
