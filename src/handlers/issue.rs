@@ -6,14 +6,25 @@ use crate::utils::{get_input, read_id};
 
 pub fn show_issue_menu(state: &mut AppState) {
     loop {
+        // println!("\n+------------------------------+");
+        // println!("|      ORGANIZATION MENU       |");
+        // println!("+------------------------------+");
+        // println!("| [1] Create organization      |");
+        // println!("| [2] Update organization      |");
+        // println!("| [3] Delete organization      |");
+        // println!("| [4] Get all organizations    |");
+        // println!("| [5] Get organization by id   |");
+        // println!("| [6] Back                     |");
+        // println!("+------------------------------+");
+
         println!("\n+------------------------------+");
-        println!("|      ISSUE MENU       |");
+        println!("|      ISSUE MENU              |");
         println!("+------------------------------+");
-        println!("| [1] Create issue      |");
-        println!("| [2] Update issue      |");
-        println!("| [3] Delete issue      |");
-        println!("| [4] Get all issues    |");
-        println!("| [5] Get issue by id   |");
+        println!("| [1] Create issue             |");
+        println!("| [2] Update issue             |");
+        println!("| [3] Delete issue             |");
+        println!("| [4] Get all issues           |");
+        println!("| [5] Get issue by id          |");
         println!("| [6] Back                     |");
         println!("+------------------------------+");
         print!("Enter choice (1-6): ");
@@ -137,25 +148,139 @@ fn get_issue_by_id(state: &AppState) {
     print_issue_details(issue);
 }
 
+// fn update_issue_by_id(state: &mut AppState) {
+//     println!("\nUpdate issue By Id");
+//     let Some(id) = read_id() else {
+//         return;
+//     };
+
+//     let Some(issue) = state.issues.get_mut(&id) else {
+//         println!("issue does not exist.");
+//         return;
+//     };
+
+//     println!("\nCurrent issue details:");
+//     print_issue_details(issue);
+
+//     print!("Enter issue title to update or leave blank: ");
+//     let issue_title = get_input();
+
+//     if !issue_title.is_empty() {
+//         issue.title = issue_title;
+//     }
+
+//     print!("Enter issue description to update or leave blank: ");
+//     let issue_description = get_input();
+//     if issue_description.is_empty() {
+//         issue.description = issue_description;
+//     }
+
+//     print!("Enter issue status to update or leave blank: ");
+//     let issue_status = get_input().to_lowercase();
+//     if issue_status.is_empty()
+//         || (issue_status != "open" && issue_status != "inprogress" && issue_status != "done")
+//     {
+//         issue.status = issue.status;
+//     }
+//     println!("Select assignee from any of these to update or leave blank:");
+//     get_users(state);
+
+//     if let Some(user_id) = read_id() {
+//         if state.users.get(&user_id).is_none() {
+//             println!("User does not exist");
+//             return;
+//         }
+//         issue.assignee_id = user_id;
+//     }
+
+//     println!("Select board from any of these");
+//     get_all_boards(state);
+
+//     let Some(board_id) = read_id() else {
+//         return;
+//     };
+
+//     if state.boards.get(&board_id).is_none() {
+//         println!("board does not exist");
+//         return;
+//     }
+
+//     println!("issue updated successfully.");
+// }
+
 fn update_issue_by_id(state: &mut AppState) {
     println!("\nUpdate issue By Id");
+
     let Some(id) = read_id() else {
         return;
     };
 
-    let Some(issue) = state.issues.get_mut(&id) else {
+    if state.issues.get(&id).is_none() {
         println!("issue does not exist.");
         return;
-    };
+    }
+
+    println!("Select assignee from any of these to update or leave blank:");
+    get_users(state);
+
+    let user_input = read_id();
+
+    if let Some(user_id) = user_input {
+        if state.users.get(&user_id).is_none() {
+            println!("User does not exist");
+            return;
+        }
+    }
+
+    println!("Select board from any of these");
+    get_all_boards(state);
+
+    let board_input = read_id();
+
+    if let Some(board_id) = board_input {
+        if state.boards.get(&board_id).is_none() {
+            println!("board does not exist");
+            return;
+        }
+    }
+
+    print!("Enter issue title to update or leave blank: ");
+    let issue_title = get_input();
+
+    print!("Enter issue description to update or leave blank: ");
+    let issue_description = get_input();
+
+    print!("Enter issue status to update or leave blank: ");
+    let issue_status = get_input().to_lowercase();
+
+    let issue = state.issues.get_mut(&id).unwrap();
 
     println!("\nCurrent issue details:");
     print_issue_details(issue);
 
-    print!("Enter issue name to update or leave blank: ");
-    let issue_title = get_input();
-
     if !issue_title.is_empty() {
         issue.title = issue_title;
+    }
+
+    if !issue_description.is_empty() {
+        issue.description = issue_description;
+    }
+
+    if !issue_status.is_empty() {
+        match issue_status.as_str() {
+            "open" => issue.status = IssueStatus::Open,
+            "inprogress" => issue.status = IssueStatus::InProgress,
+            "done" => issue.status = IssueStatus::Done,
+            _ => println!("Invalid status, keeping old value."),
+        }
+    }
+
+    if let Some(user_id) = user_input {
+        issue.assignee_id = user_id;
+    }
+
+    if let Some(board_id) = board_input {
+        issue.board_id = board_id;
     }
 
     println!("issue updated successfully.");
@@ -199,6 +324,10 @@ pub fn get_all_issue(state: &AppState) {
 
 pub fn print_issue_details(issue: &Issue) {
     println!("ID: {}", issue.id);
-    println!("Name: {}", issue.title);
+    println!("Title: {}", issue.title);
+    println!("Description: {}", issue.description);
+    println!("Status: {:?}", issue.status);
+    println!("Board: {}", issue.board_id);
+    println!("Assignee: {}", issue.assignee_id);
     println!("---------------------------");
 }

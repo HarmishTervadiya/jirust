@@ -1,4 +1,6 @@
 use std::str::FromStr;
+
+#[derive(Debug, Clone, Copy)]
 pub enum IssueStatus {
     Open,
     InProgress,
