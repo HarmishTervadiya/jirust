@@ -43,6 +43,26 @@ fn create_user(state: &mut AppState) {
     println!("User created successfully with id: {}", new_id);
 }
 
+fn read_user_id() -> Option<u32> {
+    print!("Enter id: ");
+    let raw_id = get_input();
+
+    match raw_id.parse::<u32>() {
+        Ok(id) => Some(id),
+        Err(_) => {
+            println!("Invalid id. Please enter a valid number.");
+            None
+        }
+    }
+}
+
+fn print_user_details(user: &User) {
+    println!("ID: {}", user.id);
+    println!("Name: {}", user.name);
+    println!("Email: {}", user.email);
+    println!("---------------------------");
+}
+
 fn get_users(state: &mut AppState) {
     println!("\nGet User");
 
@@ -52,48 +72,32 @@ fn get_users(state: &mut AppState) {
         return;
     }
 
-    println!("+----+----------------+----------------------+");
-    println!("| ID | Name           | Email                |");
-    println!("+----+----------------+----------------------+");
-
     for user in state.users.values() {
-        println!("ID: {}", user.id);
-        println!("Name: {}", user.name);
-        println!("Email: {}", user.email);
-        println!("---------------------------");
+        print_user_details(user);
     }
-
-    println!("+----+----------------+----------------------+");
 }
 
 fn get_user_by_id(state: &mut AppState) {
     println!("\nGet User By Id");
-    print!("Enter id: ");
-    let id:u32 = get_input().parse().unwrap();
-    
+    let Some(id) = read_user_id() else {
+        return;
+    };
+
     println!("\nUser with id: {}", id);
     if state.users.is_empty() {
         println!("No users found.");
         return;
     }
 
-    println!("+----+----------------+----------------------+");
-    println!("| ID | Name           | Email                |");
-    println!("+----+----------------+----------------------+");
-
     let user = state.users.get(&id);
     match user {
         Some(user) => {
-            println!("ID: {}", user.id);
-            println!("Name: {}", user.name);
-            println!("Email: {}", user.email);
-            println!("---------------------------");
+            print_user_details(user);
         }
         None => {
             println!("No user found.");
         }
     }
-    println!("+----+----------------+----------------------+");
 }
 
 pub fn show_user_menu(state: &mut AppState) {
@@ -108,17 +112,75 @@ pub fn show_user_menu(state: &mut AppState) {
         println!("| [5] Get user by id             |");
         println!("| [6] Back                       |");
         println!("+--------------------------------+");
-        print!("Enter choice (1-5): ");
+        print!("Enter choice (1-6): ");
 
         let input = get_input();
         match input.as_str() {
             "1" => create_user(state),
+            "2" => update_user_by_id(state),
+            "3" => delete_user_by_id(state),
             "4" => get_users(state),
             "5" => get_user_by_id(state),
             "6" => break,
-            _ => println!("Invalid option. Please enter a number from 1 to 5."),
+            _ => println!("Invalid option. Please enter a number from 1 to 6."),
         }
     }
 }
 
+pub fn update_user_by_id(state: &mut AppState) {
+    println!("\nUpdate User By Id");
+    let Some(id) = read_user_id() else {
+        return;
+    };
 
+    match state.users.get_mut(&id) {
+        Some(user) => {
+            println!("\nCurrent user details:");
+            print_user_details(user);
+
+            print!("Enter name to update or leave blank: ");
+            let name = get_input();
+            print!("Enter email to update or leave blank: ");
+            let email = get_input();
+
+            if !name.is_empty() {
+                user.name = name;
+            }
+
+            if !email.is_empty() {
+                user.email = email;
+            }
+
+            println!("User updated successfully.");
+        }
+        None => {
+            println!("User does not exist.");
+        }
+    }
+}
+
+pub fn delete_user_by_id(state: &mut AppState) {
+    println!("\nDelete User By Id");
+
+    if state.users.is_empty() {
+        println!("No users found.");
+        return;
+    }
+
+    get_users(state);
+
+    let Some(id) = read_user_id() else {
+        return;
+    };
+
+    match state.users.remove(&id) {
+        Some(user) => {
+            println!("User deleted successfully.");
+            println!("\nDeleted user details:");
+            print_user_details(&user);
+        }
+        None => {
+            println!("User does not exist.");
+        }
+    }
+}
