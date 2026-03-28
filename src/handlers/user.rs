@@ -63,7 +63,7 @@ fn print_user_details(user: &User) {
     println!("---------------------------");
 }
 
-fn get_users(state: &mut AppState) {
+pub fn get_users(state: &mut AppState) {
     println!("\nGet User");
 
     println!("\nAll Users");
@@ -77,7 +77,7 @@ fn get_users(state: &mut AppState) {
     }
 }
 
-fn get_user_by_id(state: &mut AppState) {
+pub fn get_user_by_id(state: &mut AppState) {
     println!("\nGet User By Id");
     let Some(id) = read_user_id() else {
         return;

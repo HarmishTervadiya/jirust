@@ -153,7 +153,7 @@ fn delete_board_by_id(state: &mut AppState) {
     show_board_details(&board);
 }
 
-fn get_all_boards(state: &AppState) {
+pub fn get_all_boards(state: &AppState) {
     println!("\nAll Boards");
 
     if state.boards.is_empty() {

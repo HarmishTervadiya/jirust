@@ -3,6 +3,7 @@ mod handlers {
     pub mod board;
     pub mod organization;
     pub mod user;
+    pub mod issue;
 }
 mod state;
 mod models {
@@ -15,6 +16,7 @@ mod models {
 use std::collections::HashMap;
 
 use crate::handlers::board::show_board_menu;
+use crate::handlers::issue::show_issue_menu;
 use crate::handlers::organization::show_organization_menu;
 use crate::handlers::user::show_user_menu;
 use crate::state::AppState;
@@ -34,7 +36,7 @@ fn main() {
             "1" => show_organization_menu(&mut state),
             "2" => show_user_menu(&mut state),
             "3" => show_board_menu(&mut state),
-            "4" => println!("issue option"),
+            "4" => show_issue_menu(&mut state),
             "q" => break,
             _ => println!("Invalid option"),
         }
